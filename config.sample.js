@@ -1,11 +1,11 @@
-const config;
-const message;
-const nodemailer;
-const bookDir;
+let config;
+let message;
+let nodemailer;
+let bookDir;
 
 //邮件模板
 message = {
-    from: '',
+    from: 'kindle helper',
     to: '',
     subject: 'mobi title',
     text: 'Plaintext version of the message',
@@ -28,11 +28,11 @@ booksDir = {
     sourceBooks: './sourceBooks',
     targetBooks: './targetBooks'
 }
-config = {
+
+
+
+module.exports ={
     message: message,
-    nodemailer: nodemailer,
+    nodemailerConfig: nodemailer,
     booksDir:booksDir
 }
-
-
-module.exports = { config: config }
