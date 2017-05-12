@@ -13,8 +13,8 @@ const eamilServer = require("./emailServer.js");
 // });
 
 let message = {
-    from: '317755940@qq.com',
-    to: 'wx_login_mail@163.com',
+    from: '',
+    to: '',
     subject: 'mobi title',
     text: 'Plaintext version of the message',
     html: '<p>HTML version of the message</p>',
