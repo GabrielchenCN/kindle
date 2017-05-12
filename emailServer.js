@@ -1,0 +1,27 @@
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport({
+    service: 'QQ', // no need to set host or port etc.
+    auth: {
+        user: '@qq.com',
+        pass: ''
+    }
+});
+
+
+let messageGen = function(options) {
+
+}
+
+
+
+
+// verify connection configuration
+transporter.verify(function(error, success) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Server is ready to take our messages');
+    }
+});
+
+module.exports = { transporter: transporter }
