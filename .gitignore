@@ -1,5 +1,8 @@
 #project ignore
 config.js
+*.mobi
+*.epub
+*.pdf
 
 # Logs
 logs

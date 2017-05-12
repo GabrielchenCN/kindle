@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <title>file test</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    $(function() {
+            $("#upload").on('click', function(e) {
+
+                var file = $('#file').get(0).files[0];
+                var fileName = file.name;
+                var oData = new FormData();
+                oData.append("filename", fileName);
+                oData.append("file", file);
+                // $.ajax({
+                //     type: "POST",
+                //     url: "/upload",
+                //     data: oData,
+                //     dataType: "json",
+
+                // }).done(function() {
+
+                // }).fail(function() {
+
+                // });
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    cache: false,
+                    data: oData,
+                    processData: false,
+                    contentType: false
+                }).done(function(res) {}).fail(function(res) {});
+            })
+        })
+        // window.onload=function(){
+        //     var files = document.getElementsByTagName('input'),
+        //     len = files.length,
+        //     file;
+        //     for (var i = 0; i < len; i++) {
+        //         file = files[i];
+        //         if (file.type !== 'file') continue; // 不是文件类型的控件跳过
+        //         file.onchange = function() {
+        //             var _files = this.files;
+        //             if (!_files.length) return;
+        //             if (_files.length === 1) { // 选择单个文件
+        //                 var xhr = new XMLHttpRequest();
+        //                 xhr.open('POST', 'http://localhost:8000/upload');
+        //                 var filePath = files[0].value;
+        //                 console.log(files[0],filePath.substring(filePath.lastIndexOf('\\') + 1))
+        //                 xhr.setRequestHeader('file-name', filePath.substring(filePath.lastIndexOf('\\') + 1));
+        //                 xhr.send(_files[0]);
+        //             } else { }
+        //         };
+        //     }
+        // };
+    </script>
+</head>
+
+<body>
+    <input id="file" type="file" />
+    <button id="upload">upload</button>
+</body>
+
+</html>
