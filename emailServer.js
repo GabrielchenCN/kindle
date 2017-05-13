@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require("./config.js");
-console.log("config"+config.nodemailerConfig);
+
 let transporter = nodemailer.createTransport(config.nodemailerConfig);
 
 

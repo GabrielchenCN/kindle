@@ -43,28 +43,15 @@ let convertEbooktoMobi1 = function(file, fileName) {
 	kindlegen(file, (error, mobi) => {
         	
             // mobi is an instance of Buffer with the compiled mobi file 
-            fs.writeFileAsync('./targetBooks/' + fileName, mobi)
+          	    fs.writeFileAsync('./targetBooks/' + fileName, mobi)
                 .fail(function(err) {
                     if (err) throw err;
                    
                     console.log('target Book had failed');
                 })
                 .done(function() {
-                    console.log('target Book had saved');
-                    fs.writeFileAsync('./sourceBooks/' + fileName, file)
-                        .fail(function(err) {
-                            if (err) throw err;
-                          
-                            console.log('source Book had failed');
-                        })
-                        .done(function() {
-                        	let oFile = {};
-                        	oFile.fileName = fileName;
-                        	oFile.fileUrl = './sourceBooks/' + fileName;
-                        
-                            console.log('source Book had saved');
-                        });
-                });
+                   console.log('target Book had saved');
+                });	
         });
 
 }

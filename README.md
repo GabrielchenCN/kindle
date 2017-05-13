@@ -6,4 +6,13 @@
 
 复制config.sample.js并生成和配置config.js
 
-# Run and Build
+# Run 
+
+-	Run
+
+`node app.js`
+
+-	Open
+
+`http://127.0.0.1:8000`
+
