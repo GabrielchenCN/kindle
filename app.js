@@ -28,41 +28,33 @@ server.on('request', function(request, response) {
             var form = new multiparty.Form();
             form.parse(request, function(err, fields, files) {
                 console.log(files.file[0]);
-                console.log(files.file[0].originalFilename );
+                console.log(fields);
                 var fileName = files.file[0].originalFilename
-                var file =fs.readFileSync(files.file[0].path,'utf-8');
+                var fileURL =files.file[0].path;
+                var to = fields
                  // console.log(tmpfile);
-                // kindlegen.convertEbooktoMobi(file, fileName)
-                //     .done(function(oFile) {
-                //         let message = config.message;
-                //         message.attachments = [{
-                //             filename: oFile.filename,
-                //             content: fs.readFileSync(oFile.fileUrl)
-                //         }];
-                //         console.log(message);
-                //         eamilServer.transporter.sendMail(message, (error, info) => {
-                //             if (error) {
-                //                 return console.log(error);
-                //             }
-                //             console.log('Message %s sent: %s', info.messageId, info.response);
-                //         });
-                //     });
-                kindlegen.convertEbooktoMobi1(file, fileName);
+                kindlegen.convertEbooktoMobi(fileURL, fileName)
+                    .done(function(oFile) {
+                        let message = config.message;
+                        // message.to = to||'317755940@qq.com'
+                        message.attachments = [{
+                            filename: oFile.fileName,
+                            content: fs.readFileSync(oFile.fileUrl)
+                        }];
+                        console.log(message);
+                        eamilServer.transporter.sendMail(message, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('Message %s sent: %s', info.messageId, info.response);
+                            response.writeHead(200, {'Content-Type': 'application/json'});
+                            // response.write({"code":200,"msg":"success!"});
+                            response.end({"code":200,"msg":"success!"});
+                        });
+                    });
+                // kindlegen.convertEbooktoMobi1(file, fileName);
             });
 
-            // var _fileName = request.headers['file-name'];
-
-            // console.log("_fileName"+_fileName)
-            // log(_fileName);
-            // request.once('data', function(data) {
-            //     // 大文件
-            //     //            var fis = fs.createWriteStream('/txt.txt');
-            //     //            fis.write(data);
-            //     //            fis.end();
-
-            //     // fs.writeFile(_fileName, data);
-            //     response.end();
-            // });
             break;
         case '/' || '/index.html':
             filename = 'index.html';

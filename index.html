@@ -8,10 +8,12 @@
             $("#upload").on('click', function(e) {
 
                 var file = $('#file').get(0).files[0];
+                var file = $('#mail').val();
                 var fileName = file.name;
                 var oData = new FormData();
                 oData.append("filename", fileName);
                 oData.append("file", file);
+                oData.append("mail", file);
                 // $.ajax({
                 //     type: "POST",
                 //     url: "/upload",
@@ -58,6 +60,7 @@
 </head>
 
 <body>
+    <input id="mail" type="text"  placeholder="收件人邮箱" />
     <input id="file" type="file" />
     <button id="upload">upload</button>
 </body>
