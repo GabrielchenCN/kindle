@@ -16,3 +16,5 @@
 
 `http://127.0.0.1:8000`
 
+-   Enter the Mail and upload the files
+

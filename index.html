@@ -1,68 +1,131 @@
 <html>
 
 <head>
-    <title>file test</title>
+    <title>kindle v0.0.1</title>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
     $(function() {
-            $("#upload").on('click', function(e) {
+        $("#upload").on('click', function(e) {
 
-                var file = $('#file').get(0).files[0];
-                var file = $('#mail').val();
-                var fileName = file.name;
-                var oData = new FormData();
-                oData.append("filename", fileName);
-                oData.append("file", file);
-                oData.append("mail", file);
-                // $.ajax({
-                //     type: "POST",
-                //     url: "/upload",
-                //     data: oData,
-                //     dataType: "json",
+            var file = $('#file').get(0).files[0];
+            var mail = $('#mail').val();
+            var fileName = file.name;
+            var oData = new FormData();
+            oData.append("filename", fileName);
+            oData.append("file", file);
+            oData.append("mail", mail);
+            $("#shade").addClass('bg').removeClass('bg-none');
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                cache: false,
+                data: oData,
+                processData: false,
+                contentType: false
+            }).done(function(res) {
+                $("#shade").addClass('bg-none').removeClass('bg');
+            }).fail(function(res) {
+                $("#shade").addClass('bg-none').removeClass('bg');
+            });
+        });
+        $("#upload1").on('click', function(e) {
+            $("#shade").addClass('bg').removeClass('bg-none');
+            var file = $('#file1').get(0).files[0];
+            var mail = $('#mail1').val();
+            var fileName = file.name;
+            var oData = new FormData();
+            oData.append("filename", fileName);
+            oData.append("file", file);
+            oData.append("mail", mail);
 
-                // }).done(function() {
-
-                // }).fail(function() {
-
-                // });
-                $.ajax({
-                    url: '/upload',
-                    type: 'POST',
-                    cache: false,
-                    data: oData,
-                    processData: false,
-                    contentType: false
-                }).done(function(res) {}).fail(function(res) {});
-            })
-        })
-        // window.onload=function(){
-        //     var files = document.getElementsByTagName('input'),
-        //     len = files.length,
-        //     file;
-        //     for (var i = 0; i < len; i++) {
-        //         file = files[i];
-        //         if (file.type !== 'file') continue; // 不是文件类型的控件跳过
-        //         file.onchange = function() {
-        //             var _files = this.files;
-        //             if (!_files.length) return;
-        //             if (_files.length === 1) { // 选择单个文件
-        //                 var xhr = new XMLHttpRequest();
-        //                 xhr.open('POST', 'http://localhost:8000/upload');
-        //                 var filePath = files[0].value;
-        //                 console.log(files[0],filePath.substring(filePath.lastIndexOf('\\') + 1))
-        //                 xhr.setRequestHeader('file-name', filePath.substring(filePath.lastIndexOf('\\') + 1));
-        //                 xhr.send(_files[0]);
-        //             } else { }
-        //         };
-        //     }
-        // };
+            $.ajax({
+                url: '/sendMailNormal',
+                type: 'POST',
+                cache: false,
+                data: oData,
+                processData: false,
+                contentType: false
+            }).done(function(res) {
+                $("#shade").addClass('bg-none').removeClass('bg');
+            }).fail(function(res) {
+                $("#shade").addClass('bg-none').removeClass('bg');
+            });
+        });
+    })
     </script>
 </head>
 
 <body>
-    <input id="mail" type="text"  placeholder="收件人邮箱" />
-    <input id="file" type="file" />
-    <button id="upload">upload</button>
+    <div class="kindle">
+        <div class="col">
+            <h1>转换并上传</h1>
+        </div>
+        <div class="col">
+            <input id="mail" type="text" placeholder="收件人邮箱" />
+        </div>
+        <div class="col">
+            <input id="file" type="file" />
+        </div>
+        <button id="upload">conversion and upload</button>
+    </div>
+    <div class="kindle">
+        <div class="col">
+            <h1>普通上传</h1>
+        </div>
+        <div class="col">
+            <input id="mail1" type="text" placeholder="收件人邮箱" />
+        </div>
+        <div class="col">
+            <input id="file1" type="file" />
+        </div>
+        <button id="upload1">upload</button>
+    </div>
+    <div class="bg-none" id="shade">
+        <div class="center">上传中</div>
+    </div>
+    <style type="text/css">
+    .center {
+        margin: 0 auto;
+        width: 100px;
+        color: white;
+    }
+
+    .kindle {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+    }
+
+    .bg {
+        display: block;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 1001;
+        -moz-opacity: 0.7;
+        opacity: .70;
+        filter: alpha(opacity=70);
+    }
+
+    .bg-none {
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 1001;
+        -moz-opacity: 0.7;
+        opacity: .70;
+        filter: alpha(opacity=70);
+    }
+
+    .col {}
+    </style>
 </body>
 
 </html>

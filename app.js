@@ -3,7 +3,7 @@ const multiparty = require('multiparty');
 const fs = require('fs');
 //http://bluebirdjs.com/docs/api/promisification.html
 const Promise = require("bluebird");
-const eamilServer = require("./emailServer.js");
+const emailServer = require("./emailServer.js");
 const kindlegen = require("./kindlegen.js");
 const config = require("./config.js");
 
@@ -30,34 +30,67 @@ server.on('request', function(request, response) {
                 console.log(files.file[0]);
                 console.log(fields);
                 var fileName = files.file[0].originalFilename
-                var fileURL =files.file[0].path;
+                var fileURL = files.file[0].path;
+                var fileMail = fields.mail[0];
                 var to = fields
-                 // console.log(tmpfile);
+                // console.log(tmpfile);
                 kindlegen.convertEbooktoMobi(fileURL, fileName)
                     .done(function(oFile) {
                         let message = config.message;
-                        // message.to = to||'317755940@qq.com'
+                        message.to = fileMail || config.message.to;
                         message.attachments = [{
                             filename: oFile.fileName,
                             content: fs.readFileSync(oFile.fileUrl)
                         }];
                         console.log(message);
-                        eamilServer.transporter.sendMail(message, (error, info) => {
+                        emailServer.transporter.sendMail(message, (error, info) => {
                             if (error) {
                                 return console.log(error);
                             }
                             console.log('Message %s sent: %s', info.messageId, info.response);
-                            response.writeHead(200, {'Content-Type': 'application/json'});
-                            // response.write({"code":200,"msg":"success!"});
-                            response.end({"code":200,"msg":"success!"});
+                            response.writeHead(200, { 'Content-Type': 'application/json' });
+                            // response.write({ "code": 200, "msg": "success!" });
+                            response.end();
                         });
                     });
                 // kindlegen.convertEbooktoMobi1(file, fileName);
             });
 
             break;
+        case '/sendMailNormal':
+            var form = new multiparty.Form();
+            form.parse(request, function(err, fields, files) {
+                console.log(files.file[0]);
+                console.log(fields);
+                var fileName = files.file[0].originalFilename
+                var fileURL = files.file[0].path;
+                var fileMail = fields.mail[0];
+                console.log(fileName, fileURL, fileMail);
+
+                let message = config.message;
+                message.to = fileMail || config.message.to;
+                message.attachments = [{
+                    filename: fileName,
+                    content: fs.readFileSync(fileURL)
+                }];
+                console.log(message);
+                emailServer.transporter.sendMail(message, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message %s sent: %s', info.messageId, info.response);
+                    response.writeHead(200, { 'Content-Type': 'application/json' });
+                    // response.write({ "code": 200, "msg": "success!" });
+                    response.end();
+                });
+
+                // kindlegen.convertEbooktoMobi1(file, fileName);
+            });
+
+            break;
         case '/' || '/index.html':
             filename = 'index.html';
+
         default:
             filename = filename || url.pathname.substring(1); // 去掉前导'/'
             // 基于其扩展名推测内容类型
