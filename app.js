@@ -20,6 +20,7 @@ log('Http Server is listening ' + port + ' port.');
 // Node使用'on'方法注册事件处理程序
 // 当服务器收到新请求,则运行函数处理它
 server.on('request', function(request, response) {
+    // response.setEncoding('utf8');
     var filename = null;
     // 解析请求的URL
     var url = require('url').parse(request.url);
@@ -45,12 +46,15 @@ server.on('request', function(request, response) {
                         console.log(message);
                         emailServer.transporter.sendMail(message, (error, info) => {
                             if (error) {
+                                response.writeHead(200, { 'Content-Type': 'application/json' });
+                         
+                                response.end('{ "code": 400, "msg": "error!" }', 'utf8');
                                 return console.log(error);
                             }
                             console.log('Message %s sent: %s', info.messageId, info.response);
                             response.writeHead(200, { 'Content-Type': 'application/json' });
-                            // response.write({ "code": 200, "msg": "success!" });
-                            response.end();
+                        
+                            response.end('{ "code": 200, "msg": "success!" }', 'utf8');
                         });
                     });
                 // kindlegen.convertEbooktoMobi1(file, fileName);
@@ -76,13 +80,16 @@ server.on('request', function(request, response) {
                 console.log(message);
                 emailServer.transporter.sendMail(message, (error, info) => {
                     if (error) {
+                        response.writeHead(200, { 'Content-Type': 'application/json' });
+                    
+                        response.end('{ "code": 400, "msg": "error!" }', 'utf8');
                         return console.log(error);
                     }
                     console.log('Message %s sent: %s', info.messageId, info.response);
                     response.writeHead(200, { 'Content-Type': 'application/json' });
-                    // response.write({ "code": 200, "msg": "success!" });
-                    response.end();
+                    response.end('{ "code": 200, "msg": "success!" }', 'utf8');
                 });
+
 
                 // kindlegen.convertEbooktoMobi1(file, fileName);
             });

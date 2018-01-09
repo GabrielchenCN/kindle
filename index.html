@@ -2,7 +2,7 @@
 
 <head>
     <title>kindle v0.0.1</title>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://cdnjs.gtimg.com/cdnjs/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
     <script>
     $(function() {
         $("#upload").on('click', function(e) {
@@ -24,6 +24,7 @@
                 contentType: false
             }).done(function(res) {
                 $("#shade").addClass('bg-none').removeClass('bg');
+                  alert(res.msg);
             }).fail(function(res) {
                 $("#shade").addClass('bg-none').removeClass('bg');
             });
@@ -47,6 +48,7 @@
                 contentType: false
             }).done(function(res) {
                 $("#shade").addClass('bg-none').removeClass('bg');
+                alert(res.msg);
             }).fail(function(res) {
                 $("#shade").addClass('bg-none').removeClass('bg');
             });
